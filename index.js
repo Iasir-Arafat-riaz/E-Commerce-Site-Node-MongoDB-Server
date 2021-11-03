@@ -29,9 +29,9 @@ async function run() {
       })
      
      //Post operation
-     app.post("shop",async(req,res)=>{
-       res.send("new one")
-     })
+    //  app.post("shop",async(req,res)=>{
+    //    res.send("new one")
+    //  })
 
      
     } finally {
@@ -42,7 +42,7 @@ async function run() {
 
 
 app.get("/",(req,res)=>{
-    res.send("yes sending connected")
+    res.send("yes sending connected yaya")
 })
 
 app.listen(port,()=>{
