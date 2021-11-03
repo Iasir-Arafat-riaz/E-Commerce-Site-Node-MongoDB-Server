@@ -29,7 +29,10 @@ async function run() {
       })
      
      //Post operation
-     
+     app.post("shop",async(req,res)=>{
+       res.send("new one")
+     })
+
      
     } finally {
     //   await client.close();
