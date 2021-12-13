@@ -2,6 +2,7 @@ const { MongoClient } = require("mongodb");
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
+const { json } = require("express");
 const app = express();
 
 //adding middleware
@@ -21,6 +22,7 @@ async function run() {
     await client.connect();
     const database = client.db("Ema-jhonDB");
     const allProducts = database.collection("products");
+    const orders = database.collection("orders");
     // query for movies that have a runtime less than 15 minutes
     const query = {};
     app.get("/shop", async (req, res) => {
@@ -46,9 +48,36 @@ async function run() {
     });
 
     //Post operation
-    //  app.post("shop",async(req,res)=>{
-    //    res.send("new one")
-    //  })
+     app.post("/shop/keys",async(req,res)=>{
+      //  console.log(req.body)
+      const keys = req.body;
+      const query = {key:{$in:keys}}
+      const cursor = allProducts.find(query)
+      const products = await cursor.toArray()
+       res.send(JSON.stringify(products))
+     })
+
+//order post
+
+app.post("/order",async(req,res)=>{
+ const query = req.body;
+ const order = await orders.insertOne(query)
+  res.json(order)
+  
+})
+
+app.get("/order",async(req,res)=>{
+  const email = req.query.email
+  let query = {}
+  if(email){
+    query={email:email}
+  }
+  const cursor = orders.find(query)
+  const result = await cursor.toArray()
+  res.json(result)
+  // res.send("kichu")
+})
+
   } finally {
     //   await client.close();
   }
